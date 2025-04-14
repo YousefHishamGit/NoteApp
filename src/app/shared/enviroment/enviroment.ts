@@ -1,0 +1,1 @@
+export const BaseUrl='https://note-sigma-black.vercel.app/api/v1'
