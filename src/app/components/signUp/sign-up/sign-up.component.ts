@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators,FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../../shared/services/user/user.service';
 import { Router, RouterLink } from '@angular/router';
+import { error, log } from 'node:console';
 
 @Component({
   selector: 'app-sign-up',
@@ -21,6 +22,9 @@ export class SignUpComponent {
     age: new FormControl(null, [Validators.required,Validators.min(20)]),
     phone: new FormControl(null, [Validators.required,Validators.pattern(/^01[0125][0-9]{8}$/)]),
   });
+  errorMsg: string = '';
+  errorCondition: boolean = false;
+  
 
   submitForm() {
     if (this.registerForm.valid) {
@@ -32,7 +36,17 @@ export class SignUpComponent {
           this.router.navigate(['/login']);
         },
         error: (err) => {
-          console.log('Registration error:', err);
+          console.log("enter Error");
+          this.errorCondition = true;
+          setTimeout(() => {
+            this.errorCondition = false;}, 2000);  
+            this.registerForm.reset();
+          
+          this.errorMsg = err.error.msg;
+          
+          console.log('Error:', err);
+          
+          
           
         }
       });

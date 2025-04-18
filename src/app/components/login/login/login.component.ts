@@ -16,6 +16,8 @@ export class LoginComponent {
   private readonly router = inject(Router)
   private readonly userService=inject(UserService)
   loading:boolean = false;
+  errorCondition:boolean = false;
+  errorMsg:string = '';
 
 
 
@@ -36,14 +38,24 @@ export class LoginComponent {
           if(res.msg=='done'){
             localStorage.setItem('token',res.token)
             this.router.navigate(['/blank']);
-            console.log('User log');
+            
           }
           
+        }
+        ,error: (err) => {
+          this.loading = false;
+          this.errorCondition = true;
+          this.errorMsg = err.error.msg;
+          setTimeout(() => {
+            this.errorCondition = false;
+            
+          }, 2000);
         }
       })
   
     } else {
-      console.log('Form is invalid');
+      
+      this.loading = false;
     }
   }
 
